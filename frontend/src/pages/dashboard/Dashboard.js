@@ -8,9 +8,9 @@ import useStyles from "./styles";
 import { Search as SearchIcon } from "@material-ui/icons";
 import classNames from "classnames";
 // components
-import Widget from "../../components/Widget";
-import PageTitle from "../../components/PageTitle";
-import { Typography } from "../../components/Wrappers";
+import Widget from "../../components/Widget/Widget";
+import PageTitle from "../../components/PageTitle/PageTitle";
+import { Typography } from "../../components/Wrappers/Wrappers";
 import JourneyTable from "./components/journeyTable/JourneyTable";
 import { useEffect } from "react";
 import { getJourneyList } from "../../Actions/journeyActions";

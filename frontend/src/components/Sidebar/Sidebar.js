@@ -6,8 +6,7 @@ import {
   People as DriversIcon,
   TimeToLeave as CarsIcon,
   LocalGasStation as FuelIcon,
-  ExitToApp as LogoutIcon,
-  ArrowBack as ArrowBackIcon,
+  Close as ArrowBackIcon,
 } from "@material-ui/icons";
 import { MdEngineering as MaintenanceIcon } from "react-icons/md";
 import { useTheme } from "@material-ui/styles";
@@ -67,14 +66,9 @@ const structure = [
     link: "/app/carmaintenance",
     icon: <MaintenanceIcon size={24} />,
   },
+
   {
     id: 6,
-    label: "Logout",
-    link: "https://flatlogic.com/forum",
-    icon: <LogoutIcon />,
-  },
-  {
-    id: 7,
     type: "divider",
   },
 ];

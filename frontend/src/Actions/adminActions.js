@@ -22,7 +22,7 @@ export const login = (mobileNumber, password) => async (dispatch) => {
     const { data } = await axios.post(
       `${AppConst.BASE_URL}/api/admin/login`,
       { mobileNumber, password },
-      config,
+      config
     );
 
     dispatch({

@@ -30,7 +30,7 @@ import {
 import useStyles from "../../styles";
 import { displayDateFormate } from "../../../../Services/DateFormate";
 import Widget from "../../../../components/Widget/Widget";
-import Notification from "../../../../components/Notification";
+import Notification from "../../../../components/Notification/Notification";
 
 const states = {
   accepted: "success",
@@ -69,7 +69,7 @@ const JourneyTable = ({ keyword }) => {
 
   const updateStatus = () => {
     dispatch(updateJourney(journey, status, statusId)).then(() =>
-      dispatch(getJourneyList()),
+      dispatch(getJourneyList())
     );
     setShowAlert(false);
   };

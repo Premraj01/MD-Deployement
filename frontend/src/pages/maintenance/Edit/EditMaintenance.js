@@ -11,7 +11,7 @@ import {
   Save as SaveIcon,
 } from "@material-ui/icons";
 
-import PageTitle from "../../../components/PageTitle";
+import PageTitle from "../../../components/PageTitle/PageTitle";
 import { DatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { Typography } from "../../../components/Wrappers/Wrappers";
@@ -53,9 +53,8 @@ const EditMaintenance = () => {
   const [date, setDate] = useState("");
   const [modalMaintenance, setModalMaintenance] = useState({});
   const [maintenanceTypeModal, setMaintenanceTypeModal] = useState(false);
-  const [maintenanceEditTypeModal, setMaintenanceEditTypeModal] = useState(
-    false,
-  );
+  const [maintenanceEditTypeModal, setMaintenanceEditTypeModal] =
+    useState(false);
   const [paymentMode, setPaymentMode] = useState("");
   const [servicingCenterName, setServicingCenterName] = useState("");
   const [reading, setReading] = useState("");
@@ -78,7 +77,7 @@ const EditMaintenance = () => {
   } = carDetails;
 
   const carMaintenanceDetails = useSelector(
-    (state) => state.carMaintenanceDetails,
+    (state) => state.carMaintenanceDetails
   );
   const {
     loading: carMaintenanceDetailsLoading,
@@ -87,7 +86,7 @@ const EditMaintenance = () => {
   } = carMaintenanceDetails;
 
   const carUpdateMaintenance = useSelector(
-    (state) => state.carUpdateMaintenance,
+    (state) => state.carUpdateMaintenance
   );
   const {
     loading: carUpdateMaintenanceLoading,
@@ -121,7 +120,7 @@ const EditMaintenance = () => {
       }
     }
     setAmountAddition(
-      maintenanceTypes?.reduce((acc, cur) => acc + Number(cur.basicAmount), 0),
+      maintenanceTypes?.reduce((acc, cur) => acc + Number(cur.basicAmount), 0)
     );
   }, [dispatch, maintenanceObj, successUpdate]);
 
@@ -148,7 +147,7 @@ const EditMaintenance = () => {
         CGST,
         SGST,
         paymentMode,
-      }),
+      })
     );
   };
 

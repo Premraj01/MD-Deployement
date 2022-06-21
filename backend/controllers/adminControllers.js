@@ -8,24 +8,25 @@ import generateToken from "../utils/generateToken.js";
 //@access Public
 
 const authAdmin = asyncHandler(async (req, res) => {
-	const { mobileNumber, password } = req.body;
+  const { mobileNumber, password } = req.body;
 
-	const admin = await Driver.findOne({ mobileNumber });
+  const admin = await Driver.findOne({ mobileNumber });
 
-	if (admin && (await admin.matchPassword(password)) && admin.isAdmin) {
-		res.json({
-			_id: admin._id,
-			name: admin.name,
-			mobileNumber: admin.mobileNumber,
-			isAdmin: admin.isAdmin,
-			token: generateToken(admin._id),
-		});
-	} else {
-		res.status(401).json({
-			type: "Error",
-			message: "Incorrect Mobile number or Password..!",
-		});
-	}
+  if (admin && (await admin.matchPassword(password)) && admin.isAdmin) {
+    res.json({
+      _id: admin._id,
+      firstName: admin.firstName,
+      lastName: admin.lastName,
+      mobileNumber: admin.mobileNumber,
+      isAdmin: admin.isAdmin,
+      token: generateToken(admin._id),
+    });
+  } else {
+    res.status(401).json({
+      type: "Error",
+      message: "Incorrect Mobile number or Password..!",
+    });
+  }
 });
 
 export { authAdmin };

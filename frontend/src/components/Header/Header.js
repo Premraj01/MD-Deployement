@@ -3,20 +3,21 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  InputBase,
   Menu,
   MenuItem,
   Fab,
-  Link,
+  Dialog,
+  Slide,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
-  MailOutline as MailIcon,
   NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
-  Search as SearchIcon,
   Send as SendIcon,
-  ArrowBack as ArrowBackIcon,
+  Close as ArrowBackIcon,
+  ExitToApp as LogoutIcon,
 } from "@material-ui/icons";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,11 +25,12 @@ import { useDispatch, useSelector } from "react-redux";
 import useStyles from "./styles";
 
 // components
-import { Badge, Typography, Button } from "../Wrappers";
-import Notification from "../Notification/Notification";
+import { Badge, Typography, Button } from "../Wrappers/Wrappers";
 import UserAvatar from "../UserAvatar/UserAvatar";
 import { toggleSidebar } from "../../Actions/Layout/LayoutActions";
 import { getDriversList } from "../../Actions/driverActions";
+import { logout } from "../../Actions/adminActions";
+import MonthlyTripReading from "./MonthlyTripReading";
 
 // context
 // import {
@@ -69,27 +71,9 @@ const messages = [
   },
 ];
 
-const notifications = [
-  { id: 0, color: "warning", message: "Check out this awesome ticket" },
-  {
-    id: 1,
-    color: "success",
-    type: "info",
-    message: "What is the best way to get ...",
-  },
-  {
-    id: 2,
-    color: "secondary",
-    type: "notification",
-    message: "This is just a simple notification",
-  },
-  {
-    id: 3,
-    color: "primary",
-    type: "e-commerce",
-    message: "12 new orders has arrived today",
-  },
-];
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function Header(props) {
   var classes = useStyles();
@@ -98,8 +82,8 @@ export default function Header(props) {
   const layout = useSelector((state) => state.layout);
   const { isSidebarOpened } = layout;
 
-  const [driver, setDriver] = useState([]);
-  const [notification, setNotification] = useState(false);
+  const [admin, setAdmin] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
 
   const driversList = useSelector((state) => state.driversList);
   const { error, drivers } = driversList;
@@ -112,21 +96,9 @@ export default function Header(props) {
 
   useEffect(() => {
     dispatch(getDriversList());
-    console.log("first");
-    driversArray();
+    setAdmin(JSON.parse(localStorage.getItem("adminInfo")));
   }, [dispatch]);
 
-  const driversArray = () => {
-    let driverArr = [];
-    drivers?.map((d) => {
-      // setDriver([...driver, d]);}
-      if (d.monthlyTripReading > 1150 && d.status !== "inactive") {
-        console.log(d);
-        driverArr.push(d);
-      }
-    });
-    setDriver([...driverArr]);
-  };
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar className={classes.toolbar}>
@@ -135,7 +107,7 @@ export default function Header(props) {
           onClick={() => dispatch(toggleSidebar())}
           className={classNames(
             classes.headerMenuButtonSandwich,
-            classes.headerMenuButtonCollapse,
+            classes.headerMenuButtonCollapse
           )}
         >
           {isSidebarOpened ? (
@@ -143,7 +115,7 @@ export default function Header(props) {
               classes={{
                 root: classNames(
                   classes.headerIcon,
-                  classes.headerIconCollapse,
+                  classes.headerIconCollapse
                 ),
               }}
             />
@@ -152,7 +124,7 @@ export default function Header(props) {
               classes={{
                 root: classNames(
                   classes.headerIcon,
-                  classes.headerIconCollapse,
+                  classes.headerIconCollapse
                 ),
               }}
             />
@@ -174,7 +146,7 @@ export default function Header(props) {
           className={classes.headerMenuButton}
         >
           <Badge
-            badgeContent={isNotificationsUnread ? driver.length : null}
+            badgeContent={isNotificationsUnread ? "" : null}
             color="warning"
           >
             <NotificationsIcon classes={{ root: classes.headerIcon }} />
@@ -223,7 +195,7 @@ export default function Header(props) {
               <div
                 className={classNames(
                   classes.messageNotificationSide,
-                  classes.messageNotificationBodySide,
+                  classes.messageNotificationBodySide
                 )}
               >
                 <Typography weight="medium" gutterBottom>
@@ -253,27 +225,9 @@ export default function Header(props) {
           className={classes.headerMenu}
           disableAutoFocusItem
         >
-          {driver.map((notification) => (
-            <MenuItem
-              key={notification.id}
-              // onClick={() => setNotificationsMenu(null)}
-              className={classes.headerMenuItem}
-            >
-              <>
-                <div className={classes.messageContainer}>
-                  <Typography style={{ fontSize: "12px" }}>
-                    <span>
-                      {notification.firstName} {notification.lastName}
-                    </span>{" "}
-                    has completed{" "}
-                    <span>{notification.monthlyTripReading} Km</span> for this
-                    month.
-                  </Typography>
-                </div>
-              </>
-            </MenuItem>
-          ))}
+          <MonthlyTripReading drivers={drivers} />
         </Menu>
+
         <Menu
           id="profile-menu"
           open={Boolean(profileMenu)}
@@ -285,21 +239,16 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              John Smith
+              {admin?.firstName} {admin?.lastName}
             </Typography>
-            <Typography
-              className={classes.profileMenuLink}
-              component="a"
-              color="primary"
-              href="https://flatlogic.com"
-            >
-              Flalogic.com
+            <Typography className={classes.profileMenuLink}>
+              {admin?.mobileNumber}
             </Typography>
           </div>
-          <MenuItem
+          {/* <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Profile
@@ -307,7 +256,7 @@ export default function Header(props) {
           <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Tasks
@@ -315,22 +264,51 @@ export default function Header(props) {
           <MenuItem
             className={classNames(
               classes.profileMenuItem,
-              classes.headerMenuItem,
+              classes.headerMenuItem
             )}
           >
             <AccountIcon className={classes.profileMenuIcon} /> Messages
-          </MenuItem>
+          </MenuItem> */}
           <div className={classes.profileMenuUser}>
             {/* <Typography
               className={classes.profileMenuLink}
               color="primary"
-              onClick={() => signOut(userDispatch, props.history)}
+              onClick={() => setShowAlert(false)}
             >
               Sign Out
             </Typography> */}
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<LogoutIcon />}
+              onClick={() => setShowAlert(true)}
+            >
+              signOut
+            </Button>
           </div>
         </Menu>
       </Toolbar>
+      <Dialog
+        onClose={() => setShowAlert(false)}
+        open={showAlert}
+        TransitionComponent={Transition}
+      >
+        <DialogTitle>{`Please confirm that you want to Logout..! `}</DialogTitle>
+
+        <DialogActions>
+          <Button
+            onClick={() => {
+              dispatch(logout());
+              window.location.reload();
+            }}
+          >
+            Logout
+          </Button>
+          <Button autoFocus onClick={() => setShowAlert(false)}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </AppBar>
   );
 }

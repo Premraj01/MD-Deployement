@@ -15,15 +15,11 @@ import {
 import useStyles from "./styles";
 
 // components
-import Header from "../Header";
-import Sidebar from "../Sidebar";
+import Header from "../Header/Header";
+import Sidebar from "../Sidebar/Sidebar";
 
 // pages
-import Dashboard from "../../pages/dashboard";
-import Maps from "../../pages/maps";
-// import Tables from "../../pages/tables";
-import Icons from "../../pages/icons";
-import Charts from "../../pages/charts";
+import Dashboard from "../../pages/dashboard/Dashboard";
 import DriversList from "../../pages/drivers/DriversList";
 import AddDriver from "../../pages/drivers/Add/AddDriverForm";
 import EditDriver from "../../pages/drivers/Edit/EditDriverForm";
@@ -39,9 +35,6 @@ import CarsHistory from "../../pages/cars/History/CarsHistory";
 import MaintenanceList from "../../pages/maintenance/MaintenanceList";
 import AddMaintenance from "../../pages/maintenance/Add/AddMaintenance";
 import EditMaintenance from "../../pages/maintenance/Edit/EditMaintenance";
-
-// context
-// import { useLayoutState } from "../../context/LayoutContext";
 
 function Layout(props) {
   var classes = useStyles();
@@ -115,13 +108,14 @@ function Layout(props) {
             <div>
               <Link
                 color={"primary"}
-                href={"https://flatlogic.com/"}
+                href={"mailto:kopssolutions@gmail.com"}
                 target={"_blank"}
                 className={classes.link}
               >
-                Flatlogic
+                © {new Date().getFullYear()} Work Bench , Solutions. All rights
+                are reserved.
               </Link>
-              <Link
+              {/* <Link
                 color={"primary"}
                 href={"https://flatlogic.com/about"}
                 target={"_blank"}
@@ -136,9 +130,9 @@ function Layout(props) {
                 className={classes.link}
               >
                 Blog
-              </Link>
+              </Link> */}
             </div>
-            <div>
+            {/* <div>
               <Link
                 href={"https://www.facebook.com/flatlogic"}
                 target={"_blank"}
@@ -157,7 +151,7 @@ function Layout(props) {
                   <Icon path={GithubIcon} size={1} color="#6E6E6E99" />
                 </IconButton>
               </Link>
-            </div>
+            </div> */}
           </Box>
         </div>
       </>

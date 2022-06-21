@@ -106,6 +106,7 @@ export default makeStyles((theme) => ({
     [theme.breakpoints.only("xs")]: {
       order: 3,
       width: "100%",
+      height: "36px",
       justifyContent: "center",
       marginTop: theme.spacing(3),
       marginBottom: theme.spacing(2),

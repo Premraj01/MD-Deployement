@@ -72,7 +72,7 @@ const DriversList = () => {
                           }}
                         />
                       }
-                      autoWidth
+                      fullWidth
                     >
                       <MenuItem value="active">Active</MenuItem>
                       <MenuItem value="inactive">Inactive</MenuItem>
